@@ -11,7 +11,7 @@ fastannoy — an `sl` version that is actually (partially) annoying
 # Look at the setup.sh script yourself!
 
 # Then install
-curl -fsSL https://github.com/CallMeAlphabet/fastannoy/setup.sh | bash
+curl -fsSL https://raw.githubusercontent.com/CallMeAlphabet/fastannoy/refs/heads/main/setup.sh | bash
 ```
 
 ## Uninstall

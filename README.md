@@ -8,7 +8,7 @@ fastannoy — an `sl` version that is actually (partially) annoying
 
 ## Quick Start
 ```bash
-# Look at the seup.sh script yourself!
+# Look at the setup.sh script yourself!
 
 # Then install
 curl -fsSL https://github.com/CallMeAlphabet/fastannoy/setup.sh | bash

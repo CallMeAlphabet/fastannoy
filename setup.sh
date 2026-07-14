@@ -2,13 +2,13 @@
 
 set -e
 
-echo "Installing slplus via cargo..."
-cargo install --git https://github.com/CallMeAlphabet/slplus
+echo "Installing fastannoy via cargo..."
+cargo install --git https://github.com/CallMeAlphabet/fastannoy
 
-BIN_PATH=$(which slplus 2>/dev/null || echo "$HOME/.cargo/bin/slplus")
+BIN_PATH=$(which slplus 2>/dev/null || echo "$HOME/.cargo/bin/fastannoy")
 
 if [ ! -f "$BIN_PATH" ]; then
-    echo "Error: slplus binary not found after cargo install."
+    echo "Error: fastannoy binary not found after cargo install."
     exit 1
 fi
 

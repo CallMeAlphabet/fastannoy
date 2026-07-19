@@ -5,7 +5,7 @@ set -e
 echo "Installing fastannoy via cargo..."
 cargo install --git https://github.com/CallMeAlphabet/fastannoy
 
-BIN_PATH=$(which slplus 2>/dev/null || echo "$HOME/.cargo/bin/fastannoy")
+BIN_PATH=$(which fastannoy 2>/dev/null || echo "$HOME/.cargo/bin/fastannoy")
 
 if [ ! -f "$BIN_PATH" ]; then
     echo "Error: fastannoy binary not found after cargo install."

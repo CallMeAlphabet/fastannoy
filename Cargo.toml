@@ -1,11 +1,10 @@
 [package]
 name = "fastannoy"
 version = "0.1.0"
+description = "typos that are actually annoying"
+license = "Apache-2.0"
 edition = "2021"
 
 [dependencies]
 libc = "0.2"
 
-[[bin]]
-name = "fastannoy"
-path = "src/main.rs"

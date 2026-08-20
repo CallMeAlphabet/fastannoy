@@ -1,5 +1,5 @@
 # fastannoy
-fastannoy — an `sl` version that is actually (partially) annoying
+fastannoy — typos that are actually (partially) annoying
 
 ## Table of Contents
 - [Quick Start](#quick-start)

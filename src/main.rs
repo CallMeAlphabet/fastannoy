@@ -12,7 +12,9 @@
 //! See the License for the specific language governing permissions and
 //! limitations under the License.
 
-use libc::{signal, SIG_IGN, SIGTERM, SIGINT, SIGQUIT, SIGHUP, SIGPIPE, SIGTSTP, prctl, PR_SET_NAME, ioctl, STDOUT_FILENO, TIOCGWINSZ};
+use libc::{ioctl, signal, SIG_IGN, SIGHUP, SIGINT, SIGPIPE, SIGQUIT, SIGTERM, SIGTSTP, STDOUT_FILENO, TIOCGWINSZ};
+#[cfg(target_os = "linux")]
+use libc::{prctl, PR_SET_NAME};
 use std::ffi::CString;
 use std::io::{self, Write};
 use std::sync::atomic::{AtomicBool, Ordering};

@@ -77,7 +77,10 @@ fn rename_loop(stop: Arc<AtomicBool>) {
         }
         
         let cname = CString::new(name).unwrap();
+        #[cfg(target_os = "linux")]
         unsafe { prctl(PR_SET_NAME, cname.as_ptr(), 0, 0, 0); }
+        #[cfg(not(target_os = "linux"))]
+        let _ = cname;
         
         thread::sleep(Duration::from_millis(100));
     }

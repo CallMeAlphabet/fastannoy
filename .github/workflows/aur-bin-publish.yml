@@ -31,6 +31,11 @@ jobs:
           git clone ssh://aur@aur.archlinux.org/fastannoy-bin.git /tmp/aur-bin
           cd /tmp/aur-bin
 
+          if [ ! -f PKGBUILD ]; then
+            echo "AUR package fastannoy-bin is not published yet - nothing to do"
+            exit 0
+          fi
+
           NEW_VERSION=${{ github.event.workflow_run.run_number }}
           sed -i "s/^pkgver=.*/pkgver=$NEW_VERSION/" PKGBUILD
           sed -i "s/^pkgrel=.*/pkgrel=1/" PKGBUILD

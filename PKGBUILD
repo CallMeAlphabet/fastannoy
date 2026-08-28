@@ -2,15 +2,16 @@
 pkgname=fastannoy
 pkgver=1
 pkgrel=1
+_commit=HEAD
 pkgdesc="typos that are actually annoying"
 arch=('x86_64')
 url="https://github.com/CallMeAlphabet/fastannoy"
 license=('Apache-2.0')
 depends=('gcc-libs')
-makedepends=('cargo')
+makedepends=('cargo' 'git')
 provides=('gti' 'gerp' 'sudp' 'cst' 'vom')
 conflicts=('gti' 'gerp' 'sudp' 'cst' 'vom')
-source=("fastannoy-$pkgver.tar.gz::https://github.com/CallMeAlphabet/fastannoy/archive/refs/tags/latest.tar.gz")
+source=("git+https://github.com/CallMeAlphabet/fastannoy.git#commit=$_commit")
 sha256sums=('SKIP')
 
 # Common command typos this package intentionally shadows in /usr/bin.
@@ -19,22 +20,19 @@ sha256sums=('SKIP')
 typos=('gti' 'gerp' 'sudp' 'cst' 'vom')
 
 prepare() {
-    rm -rf "$srcdir/build"
-    mkdir -p "$srcdir/build"
-    tar -xzf "$srcdir/fastannoy-$pkgver.tar.gz" --strip-components=1 -C "$srcdir/build"
-    cd "$srcdir/build"
+    cd "$srcdir/fastannoy"
     cargo fetch --locked --target x86_64-unknown-linux-gnu
 }
 
 build() {
-    cd "$srcdir/build"
+    cd "$srcdir/fastannoy"
     export RUSTUP_TOOLCHAIN=stable
     export CARGO_TARGET_DIR=target
     cargo build --frozen --release
 }
 
 package() {
-    cd "$srcdir/build"
+    cd "$srcdir/fastannoy"
     install -Dm755 "target/release/fastannoy" "$pkgdir/usr/bin/fastannoy"
     for typo in "${typos[@]}"; do
         install -Dm755 "target/release/fastannoy" "$pkgdir/usr/bin/$typo"

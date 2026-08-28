@@ -13,12 +13,7 @@
 //! limitations under the License.
 
 use libc::{ioctl, signal, SIG_IGN, SIGHUP, SIGINT, SIGPIPE, SIGQUIT, SIGTERM, SIGTSTP, STDOUT_FILENO, TIOCGWINSZ};
-#[cfg(target_os = "linux")]
-use libc::{prctl, PR_SET_NAME};
-use std::ffi::CString;
 use std::io::{self, Write};
-use std::sync::atomic::{AtomicBool, Ordering};
-use std::sync::Arc;
 use std::thread;
 use std::time::{Duration, Instant};
 
@@ -62,41 +57,8 @@ fn xorshift(seed: &mut u64) -> u64 {
     *seed
 }
 
-fn rename_loop(stop: Arc<AtomicBool>) {
-    let mut seed = std::time::SystemTime::now()
-        .duration_since(std::time::UNIX_EPOCH)
-        .unwrap()
-        .as_nanos() as u64;
-
-    let chars = b"abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789";
-
-    while !stop.load(Ordering::Relaxed) {
-        let mut name = String::with_capacity(20);
-        for _ in 0..20 {
-            let r = xorshift(&mut seed);
-            let idx = (r % chars.len() as u64) as usize;
-            name.push(chars[idx] as char);
-        }
-        
-        let cname = CString::new(name).unwrap();
-        #[cfg(target_os = "linux")]
-        unsafe { prctl(PR_SET_NAME, cname.as_ptr(), 0, 0, 0); }
-        #[cfg(not(target_os = "linux"))]
-        let _ = cname;
-        
-        thread::sleep(Duration::from_millis(100));
-    }
-}
-
 fn main() {
     ignore_signals();
-
-    let stop = Arc::new(AtomicBool::new(false));
-    let rename_stop = stop.clone();
-    
-    thread::spawn(move || {
-        rename_loop(rename_stop);
-    });
 
     let start = Instant::now();
     let duration = Duration::from_secs(20);
@@ -139,9 +101,7 @@ fn main() {
         io::stdout().flush().ok();
         thread::sleep(Duration::from_millis(100));
     }
-    
-    stop.store(true, Ordering::Relaxed);
-    
+
     print!("\x1b[2J\x1b[H");
     io::stdout().flush().ok();
     std::process::exit(0);
